@@ -18,11 +18,10 @@ cancer_model = pickle.load(open('models/final_model.sav', 'rb'))
 
 
 with st.sidebar:
-    selection = option_menu('Lung Cancer Detection System',
+    selection = option_menu('Lung Disease Detection System',
     ['Introduction',
     'About the Dataset',
-    'Lung Cancer Prediction',
-    'CNN Based disease Prediction'],
+    'Lung Disease Prediction'],
     icons = ['activity','heart','person', 'heart'],
     default_index = 0)
     
@@ -88,7 +87,7 @@ if (selection == 'About the Dataset'):
 
     with tab1:
         
-        st.header("Lung Cancer Dataset")
+        st.header("Lung Disease Dataset")
         data=pd.read_csv("datasets/data.csv")
         st.write(data.head(10))
         code = '''
@@ -120,7 +119,7 @@ if (selection == 'About the Dataset'):
         st.code(code, language='python')
 
     with tab2:
-        st.header("Lung Cancer Training Dataset")
+        st.header("Lung Disease Training Dataset")
 
         st.subheader("X_Train Data")
         data=pd.read_csv("datasets/train.csv", index_col=0)
@@ -139,7 +138,7 @@ if (selection == 'About the Dataset'):
        
 
     with tab3:
-        st.header("Lung Cancer Training Dataset")
+        st.header("Lung Disease Training Dataset")
 
         st.subheader("X_Test Data")
         data=pd.read_csv("datasets/testx.csv", index_col=0)
@@ -255,7 +254,7 @@ if (selection == 'About the Dataset'):
     
 
 # Lung Cancer disease Prediction pages
-if (selection == 'Lung Cancer Prediction'):
+if (selection == 'Lung Disease Prediction'):
     #page title
     
     ##this code is reduce effort of manuallu entering values
@@ -269,7 +268,7 @@ if (selection == 'Lung Cancer Prediction'):
     
     
 
-    st.title('Lung Cancer Prediction using ML')
+    st.title('Lung Disease Prediction using ML')
 
     idn = st.slider('Select any index from Testing Data', 0, 200, 25)
     a=concate_data.iloc[idn]
@@ -379,81 +378,5 @@ if (selection == 'Lung Cancer Prediction'):
     
     expander.write(concate_data.head(5))
     
-
-    
-        
-   
-
-if (selection == 'CNN Based disease Prediction'):
-    st.set_option('deprecation.showfileUploaderEncoding', False)
-    #@st.cache(allow_output_mutation=True)
-
-  def loading_model():
-    fp = "models/keras_model.h5"
-    model_loader = load_model(fp)
-    return model_loader
-
-  cnn = loading_model()
-  st.write("""
-  # Lung Cancer Detection using CNN and CT-Scan Images
-  """)
-
-
-
-  temp = st.file_uploader("Upload CT-Scan Image",type=['png','jpeg','jpg'])
-  if temp is not None:
-      file_details = {"FileName":temp.name,"FileType":temp.type,"FileSize":temp.size}
-      st.write(file_details)
-  #temp = temp.decode()
-
-  buffer = temp
-  temp_file = NamedTemporaryFile(delete=False)
-  if buffer:
-      temp_file.write(buffer.getvalue())
-      st.write(image.load_img(temp_file.name))
-
-
-  if buffer is None:
-    st.text("Oops! that doesn't look like an image. Try again.")
-
-  else:
-
-  
-
-    ved_img = image.load_img(temp_file.name, target_size=(224, 224))
-
-    # Preprocessing the image
-    pp_ved_img = image.img_to_array(ved_img)
-    pp_ved_img = pp_ved_img/255
-    pp_ved_img = np.expand_dims(pp_ved_img, axis=0)
-
-    #predict
-    hardik_preds= cnn.predict(pp_ved_img)
-    print(hardik_preds[0])
-
-    if hardik_preds[0][0]>= 0.5:
-      out = ('I am {:.2%} percent confirmed that this is a Normal Case'.format(hardik_preds[0][0]))
-      st.balloons()
-      st.success(out)
-    
-    else: 
-      out = ('I am {:.2%} percent confirmed that this is a Lung Cancer Case'.format(1-hardik_preds[0][0]))
-      st.error(out)
-
-    
-    
-    image = Image.open(temp)
-    st.image(image,use_column_width=True)
-            
-              
-
-hide_st_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_st_style, unsafe_allow_html=True)  
 
     
