@@ -385,7 +385,17 @@ if (selection == 'Lung Cancer Prediction'):
    
 
 if (selection == 'CNN Based disease Prediction'):
-  #st.set_option('deprecation.showfileUploaderEncoding', False)
+  import streamlit as st
+
+# File uploader implementation (without deprecated set_option line)
+uploaded_file = st.file_uploader("Choose a file", type=["png", "jpg", "jpeg"])
+
+if uploaded_file is not None:
+    # Process the uploaded file
+    st.image(uploaded_file, caption="Uploaded Image", use_column_width=True)
+    st.write("File uploaded successfully!")
+
+    #st.set_option('deprecation.showfileUploaderEncoding', False)
   @st.cache(allow_output_mutation=True)
 
   def loading_model():
