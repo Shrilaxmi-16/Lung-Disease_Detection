@@ -1,4 +1,3 @@
-
 import pickle
 import streamlit as st
 import numpy as np
@@ -386,8 +385,8 @@ if (selection == 'Lung Cancer Prediction'):
    
 
 if (selection == 'CNN Based disease Prediction'):
-    st.file_uploader('deprecation.showfileUploaderEncoding', False)
-    @st.cache(allow_output_mutation=True)
+  st.set_option('deprecation.showfileUploaderEncoding', False)
+  @st.cache(allow_output_mutation=True)
 
   def loading_model():
     fp = "models/keras_model.h5"
