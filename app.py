@@ -31,7 +31,7 @@ with st.sidebar:
 if (selection == 'Introduction'):
 
     from PIL import Image
-
+    st.title('Lung Disease Detection unsing Machine Learning')
     gg = Image.open("images/lung-cancer.jpg")
 
     st.image(gg, caption='Introduction to Lung Cancer',width=600)
